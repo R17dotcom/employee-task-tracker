@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-
-const API_URL = "http://127.0.0.1:8000";
-function App(){
+const API_URL="http://127.0.0.1:8000";
+function App() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -159,7 +158,6 @@ function App(){
           <strong>{pending}</strong>
           <span className="stat-note">Waiting to begin</span>
         </div>
-
         <div className="stat-card">
           <span className="stat-label">In Progress</span>
           <strong>{inProgress}</strong>
@@ -181,9 +179,8 @@ function App(){
               <h2>Add a New Task</h2>
             </div>
             <span className="heading-icon">+</span>
-          </div>
-
-          <form onSubmit={addTask}>
+            </div>
+            <form onSubmit={addTask}>
             <label htmlFor="title">Task Title *</label>
             <input
               id="title"
@@ -194,7 +191,6 @@ function App(){
               maxLength={150}
               required
             />
-
             <label htmlFor="description">Description</label>
             <textarea
               id="description"
@@ -204,7 +200,6 @@ function App(){
               placeholder="Add details about the task..."
               rows="3"
             />
-
             <label htmlFor="assigned_employee">Assign Employee *</label>
             <input
               id="assigned_employee"
@@ -227,7 +222,6 @@ function App(){
               <option value="Medium">Medium</option>
               <option value="High">High</option>
             </select>
-
             <button className="primary-button" type="submit">
               + Create Task
             </button>
@@ -326,6 +320,5 @@ function App(){
 }
 
 export default App;
-
 
 

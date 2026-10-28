@@ -9,11 +9,11 @@ async def lifespan(app:FastAPI):
     create_table()
     yield
 
-app=FastAPI(
-    title="Employee Task Tracker API",
-    description="REST API for managing employee tasks",
-    version="1.0.0",
-    lifespan=lifespan,
+app = FastAPI(
+title="Employee Task Tracker API",
+description="REST API fro managing employee tasks",
+version="1.0.0",
+lifespan=lifespan,
 )
 app.add_middleware(
     CORSMiddleware,
@@ -23,10 +23,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 class TaskCreate(BaseModel):
-    title: str = Field(min_length=1, max_length=150)
+    title: str
     description: str = ""
     priority: str = "Medium"
-    assigned_employee: str = Field(min_length=1, max_length=100)
+    assigned_employee: str
 
 
 class TaskStatusUpdate(BaseModel):
@@ -34,17 +34,19 @@ class TaskStatusUpdate(BaseModel):
 
 def get_task_or_404(task_id: int):
     connection = get_connection()
-    task=connection.execute(
-        "SELECT*FROM tasks Where id =?", (task_id,)
+    task = connection.execute(
+        "SELECT * FROM tasks WHERE id = ?", (task_id,)
     ).fetchone()
     connection.close()
+
     if task is None:
         raise HTTPException(status_code=404, detail="Task not found")
-    return dict (task)
 
+    return dict(task)
 @app.get("/")
 def home():
     return {"message": "Employee Task Tracker API is running"}
+
 
 @app.get("/tasks")
 def get_tasks():
@@ -55,7 +57,6 @@ def get_tasks():
     connection.close()
 
     return [dict(task) for task in tasks]
-
 @app.get("/tasks/{task_id}")
 def get_task(task_id: int):
     return get_task_or_404(task_id)
@@ -91,6 +92,8 @@ def create_task(task: TaskCreate):
     connection.close()
 
     return get_task_or_404(task_id)
+
+
 @app.patch("/tasks/{task_id}")
 def update_task_status(task_id: int, update: TaskStatusUpdate):
     allowed_statuses = ["Pending", "In Progress", "Completed"]
@@ -114,6 +117,7 @@ def update_task_status(task_id: int, update: TaskStatusUpdate):
         raise HTTPException(status_code=404, detail="Task not found")
 
     return get_task_or_404(task_id)
+
 
 @app.delete("/tasks/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_task(task_id: int):
