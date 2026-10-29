@@ -10,21 +10,23 @@ async def lifespan(app:FastAPI):
     yield
 
 app = FastAPI(
-title="Employee Task Tracker API",
-description="REST API fro managing employee tasks",
-version="1.0.0",
-lifespan=lifespan,
+    title="Employee Task Tracker API",
+    description="REST API for managing employee tasks",
+    version="1.0.0",
+    lifespan=lifespan,
 )
+
+# Replace your current app.add_middleware block with this:
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https://employee-task-tracker-.*\.vercel\.app",
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
     ],
+    allow_origin_regex=r"https://.*\.vercel\.app",  # Matches ANY Vercel preview or production deployment URL
     allow_credentials=True,
-    allow_methods=[""],
-    allow_headers=[""],
+    allow_methods=["*"],  # Allows GET, POST, PUT, DELETE, OPTIONS, etc.
+    allow_headers=["*"],  # Allows all headers
 )
 
 
