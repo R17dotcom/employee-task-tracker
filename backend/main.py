@@ -26,6 +26,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.get("/cors-check")
+def cors_check():
+    return {"message": "CORS diagnostic endpoint is working"}
+
 class TaskCreate(BaseModel):
     title: str
     description: str = ""
