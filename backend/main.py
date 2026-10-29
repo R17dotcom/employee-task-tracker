@@ -17,15 +17,16 @@ lifespan=lifespan,
 )
 app.add_middleware(
     CORSMiddleware,
+    allow_origin_regex=r"https://employee-task-tracker(?:-[a-z0-9]+)?-rithikhaaa\.vercel\.app",
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "https://employee-task-tracker-qpt6yi0sp-rithikhaaa.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 @app.get("/cors-check")
 def cors_check():
     return {"message": "CORS diagnostic endpoint is working"}
